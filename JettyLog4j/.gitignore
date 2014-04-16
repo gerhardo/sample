@@ -1,0 +1,12 @@
+/target
+/WebContent
+*.class
+*.jar
+*.war
+*.ear
+.classpath
+.project
+.settings
+.jsdtscope
+logs
+
