@@ -23,6 +23,8 @@ public class HelloWorld extends AbstractHandler
     	LOG.info("handle enter");
         response.setContentType("text/html;charset=utf-8");
         response.setStatus(HttpServletResponse.SC_OK);
+        LOG.debug("response:-start-\n" + response);
+        LOG.debug("response:--end--");
         baseRequest.setHandled(true);
         response.getWriter().println("<h1>Hello World</h1>");
     	LOG.info("handle done");
