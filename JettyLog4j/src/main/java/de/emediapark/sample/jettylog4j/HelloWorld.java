@@ -5,14 +5,15 @@ import javax.servlet.ServletException;
 
 import java.io.IOException;
 
-import org.apache.log4j.Logger;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
  
 public class HelloWorld extends AbstractHandler
 {
-	private static final Logger LOG = Logger.getLogger(HelloWorld.class);
+	private static final Logger LOG = LoggerFactory.getLogger(HelloWorld.class);
 	
     public void handle(String target,
                        Request baseRequest,
