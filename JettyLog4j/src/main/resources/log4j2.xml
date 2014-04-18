@@ -1,18 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="debug">
+<!-- Format mit Schemapruefung (strict=true) -->
+<Configuration status="debug" monitorInterval="30"
+	verbose="false" strict="true">
 	<Appenders>
-		<Console name="STDOUT" target="SYSTEM_OUT">
-			<PatternLayout pattern="LOG4J2 %d %-5p [%t] %C{2} (%F:%L) - %m%n" />
-		</Console>
-		<File name="LOGFILE" fileName="logs/example.log" append="true">
-			<PatternLayout pattern="LOG4J2 %d %t %-5p %c{2} - %m%n" />
-		</File>
+		<Appender name="cons" type="Console">
+			<Layout type="PatternLayout" pattern="LOG4J2 %d %-5p [%t] %C{2} (%F:%L) - %m%n"></Layout>
+		</Appender>
+		<Appender name="logfile" type="File" fileName="logs/example.log"
+			append="true">
+			<Layout type="PatternLayout" pattern="LOG4J2 %d %t %-5p %c{2} - %m%n"></Layout>
+		</Appender>
 	</Appenders>
+
 	<Loggers>
-		<Logger name="org.apache.log4j.xml" level="info" />
+		<Logger name="de.emediapark.sample" level="debug" additivity="false">
+			<AppenderRef ref="logfile" />
+			<AppenderRef ref="cons" />
+		</Logger>
 		<Root level="debug">
-			<AppenderRef ref="STDOUT" />
-			<AppenderRef ref="LOGFILE" />
+			<AppenderRef ref="cons" />
 		</Root>
 	</Loggers>
 </Configuration>
