@@ -4,6 +4,14 @@
 	xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<!-- bean definitions here -->
-
+	<!-- Init JUL Logging -->
+	<bean id="initLoggingInvocation"
+		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetClass">
+			<value>de.emediapark.sample.jettylog4j.Jul2Slf4jConfigurator</value>
+		</property>
+		<property name="targetMethod">
+			<value>init</value>
+		</property>
+	</bean>
 </beans>
