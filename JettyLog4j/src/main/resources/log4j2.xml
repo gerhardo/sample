@@ -6,18 +6,28 @@
 		<Appender name="cons" type="Console">
 			<Layout type="PatternLayout" pattern="LOG4J2 %d %-5p [%t] %C{2} (%F:%L) - %m%n"></Layout>
 		</Appender>
-		<Appender name="logfile" type="File" fileName="logs/example.log"
+		<Appender name="logfile-app" type="File" fileName="logs/application.log"
 			append="true">
-			<Layout type="PatternLayout" pattern="LOG4J2 %d %t %-5p %c{2} - %m%n"></Layout>
+			<Layout type="PatternLayout" pattern="APP %d %t %-5p %c{2} - %m%n"></Layout>
+		</Appender>
+		<Appender name="logfile-gui" type="File" fileName="logs/gui.log"
+			append="false">
+			<Layout type="PatternLayout" pattern="GUI %d{HH:mm:ss} %t %-5p %c{2} - %m%n"></Layout>
 		</Appender>
 	</Appenders>
 
 	<Loggers>
 		<Logger name="de.emediapark.sample" level="debug" additivity="false">
-			<AppenderRef ref="logfile" />
+			<AppenderRef ref="logfile-app" />
 			<AppenderRef ref="cons" />
 		</Logger>
-		<Root level="debug">
+		<Logger name="org.apache.myfaces" level="debug" additivity="false">
+			<AppenderRef ref="logfile-gui" />
+		</Logger>
+		<Logger name="javax.faces" level="debug" additivity="false">
+			<AppenderRef ref="logfile-gui" />
+		</Logger>
+		<Root level="warn">
 			<AppenderRef ref="cons" />
 		</Root>
 	</Loggers>
