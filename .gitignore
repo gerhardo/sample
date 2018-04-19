@@ -1,6 +1,7 @@
 **/*.class
 **/*.log
 **/*.jar
+bin
 maven-eclipse.xml
 modules
 target
