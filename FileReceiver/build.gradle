@@ -35,6 +35,9 @@ repositories {
 dependencies {
     compile('org.springframework.boot:spring-boot-starter-web')
     testCompile("junit:junit")
+    testCompile("org.glassfish.jersey.core:jersey-client:2.26-b04")
+    testCompile("org.glassfish.jersey.inject:jersey-hk2:2.26-b04")
+    testCompile("org.glassfish.jersey.media:jersey-media-multipart:2.26-b04")
 }
 
 
