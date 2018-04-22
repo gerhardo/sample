@@ -29,7 +29,7 @@ public class FileReceiverController {
 
 		LOG.fine("writing of " + filename + " started");
 		saveInputToDirectory(filename, fileInputStream);
-		LOG.info("upload of " + filename + "done");
+		LOG.info("upload of " + filename + " done");
 
 		return new ResponseEntity<String>("uploaded " + filename,HttpStatus.OK);
 	}
@@ -44,7 +44,9 @@ public class FileReceiverController {
 		try {
 
 			byte[] buffer = new byte[1024];
-			String saveDir = System.getProperty(PROP_FILERECEIVER_SAVEDIR, System.getenv("temp"));
+			String saveDir = System.getenv(PROP_FILERECEIVER_SAVEDIR);
+			if (saveDir == null || saveDir.length() == 0)
+				saveDir = System.getenv("temp");
 			String fout = saveDir + File.separator + name;
 			FileOutputStream fos = new FileOutputStream(fout);
 			int cnt = 0;
