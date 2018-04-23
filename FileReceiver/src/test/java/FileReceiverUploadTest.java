@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import sample.rvs.domain.FileReceiver;
 import sample.rvs.domain.FileSender;
 
 @RunWith(SpringRunner.class)
@@ -19,7 +20,7 @@ public class FileReceiverUploadTest {
 
 	@Before
 	public void setUp() {
-		System.setProperty("FILERECEIVER_SAVEDIR", "/tmp");
+		System.setProperty(FileReceiver.PROP_FILERECEIVER_SAVEDIR, "/tmp");
 	}
 
 	@Test
