@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.net.URL;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -28,15 +27,17 @@ public class FileSender {
 	 */
 	public int doWork(String filePath, String targetAdress) throws FileNotFoundException {
 
-		URL url= Thread.currentThread().getContextClassLoader().getResource(filePath);
-		File f = new File(url.getFile());
+		File f = new File(filePath);
+		if (f == null || !f.canRead()) {
+			throw new IllegalArgumentException("file '" + filePath + "' not found or can not be read");
+		}
 
 		Configuration clientConfig = new ClientConfig();
 		Client client = ClientBuilder.newClient(clientConfig);
 		client.property(ClientProperties.REQUEST_ENTITY_PROCESSING, "CHUNKED");
 
 		WebTarget target = client.target(targetAdress);
-		InputStream fileInStream = new FileInputStream(url.getFile());
+		InputStream fileInStream = new FileInputStream(filePath);
 		String contentDisposition = "attachment; filename=\"" + f.getName() + "\"";
 		Response response = target.path(f.getName())
 		            .request(MediaType.APPLICATION_OCTET_STREAM_TYPE)

@@ -1,43 +1,35 @@
 import static org.junit.Assert.*;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
-
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.Configuration;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
-import org.apache.catalina.WebResource;
-import org.glassfish.jersey.client.ClientConfig;
-import org.glassfish.jersey.client.ClientProperties;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import sample.rvs.domain.FileSender;
 
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = sample.rvs.FileReceiverApplication.class, webEnvironment = WebEnvironment.RANDOM_PORT)
 public class FileReceiverUploadTest {
 
+	@LocalServerPort
+	private int port;
+
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
+		System.setProperty("FILERECEIVER_SAVEDIR", "/tmp");
 	}
 
 	@Test
 	public void uploadSingleFile() {
 
 		String fileName = "test.dat";
-		String svcUri ="http://localhost:8080/upload";
+		String svcUri ="http://localhost:" + String.valueOf(port) + "/upload";
 		try {
 			FileSender fsw = new FileSender();
-			fsw.doWork(fileName, svcUri);
+			fsw.doWork(Thread.currentThread().getContextClassLoader().getResource(fileName).getPath(), svcUri);
 		}
 		catch (Exception e) {
 			fail(e.toString());
