@@ -22,6 +22,8 @@ import org.glassfish.jersey.client.ClientProperties;
 import org.junit.Before;
 import org.junit.Test;
 
+import sample.rvs.domain.FileSender;
+
 public class FileReceiverUploadTest {
 
 	@Before
@@ -33,26 +35,9 @@ public class FileReceiverUploadTest {
 
 		String fileName = "test.dat";
 		String svcUri ="http://localhost:8080/upload";
-
 		try {
-			URL url= Thread.currentThread().getContextClassLoader().getResource(fileName);
-			File f = new File(url.getFile());
-
-			Configuration clientConfig = new ClientConfig();
-			Client client = ClientBuilder.newClient(clientConfig);
-			client.property(ClientProperties.REQUEST_ENTITY_PROCESSING, "CHUNKED");
-
-			WebTarget target = client.target(svcUri);
-			InputStream fileInStream = new FileInputStream(url.getFile());
-			String contentDisposition = "attachment; filename=\"" + f.getName() + "\"";
-			Response response = target.path(f.getName())
-			            .request(MediaType.APPLICATION_OCTET_STREAM_TYPE)
-			            .header("Content-Disposition", contentDisposition)
-			            .header("Content-Length", (int) f.length())
-			            .post(Entity.entity(fileInStream, MediaType.APPLICATION_OCTET_STREAM_TYPE));
-			System.out.println(response.getStatus());
-			System.out.println(response.getHeaders());
-
+			FileSender fsw = new FileSender();
+			fsw.doWork(fileName, svcUri);
 		}
 		catch (Exception e) {
 			fail(e.toString());
