@@ -6,10 +6,23 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * Handle a received file.
+ *
+ * @author geotte
+ *
+ */
 public class FileReceiver {
 
 	public static final String PROP_FILERECEIVER_SAVEDIR = "FILERECEIVER_SAVEDIR" ;
 
+	/**
+	 * Read input stream and write it to a file.
+	 * @param name
+	 * @param is
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 */
 	public void saveInputToDirectory(String name, InputStream is) throws FileNotFoundException, IOException {
 		byte[] buffer = new byte[1024];
 		String saveDir = System.getProperty(PROP_FILERECEIVER_SAVEDIR);
