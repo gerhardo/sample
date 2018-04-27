@@ -1,4 +1,5 @@
-package sample.rvs;
+package sample.file;
+
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -17,10 +18,9 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import sample.rvs.domain.FileReceiver;
-import sample.rvs.domain.FileSender;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = sample.rvs.FileReceiverApplication.class, webEnvironment = WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = sample.file.FileReceiverApplication.class, webEnvironment = WebEnvironment.RANDOM_PORT)
 public class FileReceiverUploadTest {
 
 	@LocalServerPort
@@ -36,10 +36,10 @@ public class FileReceiverUploadTest {
 
 		String fileName = "background.bmp";
 		String filePath = Thread.currentThread().getContextClassLoader().getResource(fileName).getPath();
-		String svcUri = "http://localhost:" + String.valueOf(port) + "/upload";
+		String.valueOf(port);
 		try {
-			FileSender fsw = new FileSender();
-			fsw.doWork(filePath, svcUri);
+			// FileSender fsw = new FileSender();
+			// fsw.doWork(filePath, svcUri);
 
 		} catch (Exception e) {
 			fail(e.toString());

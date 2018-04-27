@@ -1,0 +1,6 @@
+---
+applications:
+- name: apos-nf-rvs
+  memory: 1024M
+  path: ../../../build/libs/FileReceiver-0.0.1-SNAPSHOT.jar
+  buildpack: java_buildpack
