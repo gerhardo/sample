@@ -1,0 +1,2 @@
+include ':FileSender'
+project(':FileSender').projectDir = new File("C:\\Users\\FC85WFZ\\work\\dev\\sample", 'FileSender')

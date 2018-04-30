@@ -25,9 +25,10 @@ public class FileReceiver {
 	 */
 	public void saveInputToDirectory(String name, InputStream is) throws FileNotFoundException, IOException {
 		byte[] buffer = new byte[1024];
-		String saveDir = System.getProperty(PROP_FILERECEIVER_SAVEDIR);
-		if (saveDir == null || saveDir.length() == 0)
-			saveDir = System.getenv("temp");
+		String saveDir = System.getenv(PROP_FILERECEIVER_SAVEDIR);
+		if (saveDir == null || saveDir.length() == 0) {
+			throw new IllegalArgumentException("Environment variable '" + PROP_FILERECEIVER_SAVEDIR + "' not set. Set it to a valid directory for saving.");
+		}
 		String fout = saveDir + File.separator + name;
 		FileOutputStream fos = new FileOutputStream(fout);
 		int cnt = 0;

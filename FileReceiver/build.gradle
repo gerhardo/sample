@@ -43,6 +43,7 @@ dependencies {
     compile("org.glassfish.jersey.media:jersey-media-multipart:2.26-b04")
     testCompile("junit:junit")
     testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile(project(':FileSender'))
 }
 
 

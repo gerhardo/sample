@@ -18,6 +18,7 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import sample.file.domain.FileReceiver;
+import sample.file.domain.FileSender;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = sample.file.FileReceiverApplication.class, webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -26,27 +27,24 @@ public class FileReceiverUploadTest {
 	@LocalServerPort
 	private int port;
 
-	@Before
-	public void setUp() {
-		System.setProperty(FileReceiver.PROP_FILERECEIVER_SAVEDIR, "/tmp");
-	}
-
 	@Test
 	public void uploadSingleFile() throws IOException {
 
 		String fileName = "background.bmp";
 		String filePath = Thread.currentThread().getContextClassLoader().getResource(fileName).getPath();
+		String svcUri = "http://localhost:" + String.valueOf(port) + "/upload";
+
 		String.valueOf(port);
 		try {
-			// FileSender fsw = new FileSender();
-			// fsw.doWork(filePath, svcUri);
+			FileSender fsw = new FileSender();
+			fsw.doWork(filePath, svcUri);
 
 		} catch (Exception e) {
 			fail(e.toString());
 		}
 
 		// test received file
-		File f = new File(System.getProperty(FileReceiver.PROP_FILERECEIVER_SAVEDIR) + File.separatorChar + fileName);
+		File f = new File(System.getenv(FileReceiver.PROP_FILERECEIVER_SAVEDIR) + File.separatorChar + fileName);
 		assertNotNull(f);
 		assertTrue(f.canRead());
 
