@@ -49,7 +49,7 @@ public class FileSender {
 				.header("Content-Disposition", contentDisposition).header("Content-Length", (int) f.length())
 				.post(Entity.entity(fileInStream, MediaType.APPLICATION_OCTET_STREAM_TYPE));
 
-		LOG.info("done, respone was " + String.valueOf(response.getStatus()));
+		LOG.info("done, response was " + String.valueOf(response.getStatus()));
 		return response.getStatus();
 	}
 }
