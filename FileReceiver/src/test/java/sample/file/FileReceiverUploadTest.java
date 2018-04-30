@@ -7,9 +7,12 @@ import static org.junit.Assert.fail;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.attribute.FileAttribute;
 import java.util.Arrays;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,11 +27,18 @@ import sample.file.domain.FileSender;
 @SpringBootTest(classes = sample.file.FileReceiverApplication.class, webEnvironment = WebEnvironment.RANDOM_PORT)
 public class FileReceiverUploadTest {
 
+	private static final int FileAttribute = 0;
 	@LocalServerPort
 	private int port;
 
+	@Before
+	public void setUp() throws IOException {
+		System.setProperty(FileReceiver.PROP_FILERECEIVER_SAVEDIR, Files.createTempDirectory("fr").toAbsolutePath().toString());
+	}
+
 	@Test
 	public void uploadSingleFile() throws IOException {
+
 
 		String fileName = "background.bmp";
 		String filePath = Thread.currentThread().getContextClassLoader().getResource(fileName).getPath();
@@ -44,7 +54,7 @@ public class FileReceiverUploadTest {
 		}
 
 		// test received file
-		File f = new File(System.getenv(FileReceiver.PROP_FILERECEIVER_SAVEDIR) + File.separatorChar + fileName);
+		File f = new File(System.getProperty(FileReceiver.PROP_FILERECEIVER_SAVEDIR) + File.separatorChar + fileName);
 		assertNotNull(f);
 		assertTrue(f.canRead());
 

@@ -6,6 +6,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.springframework.util.StringUtils;
+
 /**
  * Handle a received file.
  *
@@ -25,9 +27,13 @@ public class FileReceiver {
 	 */
 	public void saveInputToDirectory(String name, InputStream is) throws FileNotFoundException, IOException {
 		byte[] buffer = new byte[1024];
-		String saveDir = System.getenv(PROP_FILERECEIVER_SAVEDIR);
-		if (saveDir == null || saveDir.length() == 0) {
-			throw new IllegalArgumentException("Environment variable '" + PROP_FILERECEIVER_SAVEDIR + "' not set. Set it to a valid directory for saving.");
+
+		String saveDir = System.getProperty(PROP_FILERECEIVER_SAVEDIR);
+		if (StringUtils.isEmpty(saveDir)) {
+			saveDir = System.getenv(PROP_FILERECEIVER_SAVEDIR);
+		}
+		if (StringUtils.isEmpty(saveDir)) {
+			throw new IllegalArgumentException("Environment variable or property  '" + PROP_FILERECEIVER_SAVEDIR + "' not set. Set it to a valid directory for saving.");
 		}
 		String fout = saveDir + File.separator + name;
 		FileOutputStream fos = new FileOutputStream(fout);
