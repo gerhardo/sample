@@ -1,4 +1,4 @@
-package sample.rvs.api;
+package sample.file.api;
 
 import java.io.InputStream;
 import java.util.logging.Logger;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import sample.rvs.domain.FileReceiver;
+import sample.file.domain.FileReceiver;
 
 @RestController
 @RequestMapping("/")

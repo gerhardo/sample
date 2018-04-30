@@ -1,4 +1,4 @@
-package sample.rvs.domain;
+package sample.file.domain;
 
 import java.io.File;
 import java.io.FileNotFoundException;

@@ -17,7 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import sample.rvs.domain.FileReceiver;
+import sample.file.domain.FileReceiver;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = sample.file.FileReceiverApplication.class, webEnvironment = WebEnvironment.RANDOM_PORT)
