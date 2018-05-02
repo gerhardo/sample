@@ -40,12 +40,10 @@ public class FileSenderApplication {
 		final CommandLineParser parser = new DefaultParser();
 		try {
 			final CommandLine cmd = parser.parse(options, args);
-			if (cmd.hasOption("a") && cmd.hasOption("f")) {
-				FileSender fs = new FileSender();
-				fs.doWork(cmd.getOptionValue("f"), cmd.getOptionValue("a"));
-			} else {
+			FileSender fs = new FileSender();
+			int ret = fs.doWork(cmd.getOptionValue("f"), cmd.getOptionValue("a"));
+			if (ret != 200) {
 				exitCode = 1;
-				usage();
 			}
 		} catch (Exception e) {
 			exitCode = 2;

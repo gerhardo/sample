@@ -18,6 +18,7 @@ generated-java
 .factorypath
 .apt_generated
 .checkstyle
+.springBeans
 pom.xml.versionsBackup
 rebel.xml
 lib
