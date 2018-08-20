@@ -1,12 +1,22 @@
 buildscript {
 	ext {
 		springBootVersion = '2.0.1.RELEASE'
+		swaggerOutputDir = file("${buildDir}/swagger")
+        asciiDocOutputDir = file("${buildDir}/asciidoc/generated")
+        snippetsOutputDir = file("${buildDir}/asciidoc/snippets")
 	}
 	repositories {
 		mavenCentral()
+        maven { url "https://repo.spring.io/snapshot" }
+        maven { url "https://repo.spring.io/milestone" }
+        maven { url "https://plugins.gradle.org/m2/" }
 	}
 	dependencies {
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+        classpath 'org.asciidoctor:asciidoctor-gradle-plugin:1.5.8'
+        classpath 'org.asciidoctor:asciidoctorj-pdf:1.5.0-alpha.10.1'
+		classpath 'io.github.swagger2markup:swagger2markup-spring-restdocs-ext:1.3.1'
+        classpath 'io.github.swagger2markup:swagger2markup-gradle-plugin:1.3.1'
 	}
 }
 
@@ -15,6 +25,8 @@ apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 apply plugin: 'application'
+apply plugin: 'io.github.swagger2markup'
+apply plugin: 'org.asciidoctor.convert'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -41,9 +53,48 @@ dependencies {
     compile("org.glassfish.jersey.core:jersey-client:2.26-b04")
     compile("org.glassfish.jersey.inject:jersey-hk2:2.26-b04")
     compile("org.glassfish.jersey.media:jersey-media-multipart:2.26-b04")
-    testCompile("junit:junit")
+ 	compile("io.springfox:springfox-swagger-ui:2.5.0")
+    compile("io.springfox:springfox-swagger2:2.5.0")
+    compile 'io.swagger:swagger-annotations:1.5.6'
+     testCompile("junit:junit")
     testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile(project(':FileSender'))
 }
 
 
+task generateDocs {
+
+    def p = ['curl', "http://localhost:8080/v2/api-docs"].execute()
+    println 'Getting swagger.json'
+    swaggerOutputDir.mkdirs()
+    File swaggerFile= new File("${swaggerOutputDir}/swagger.json")
+    swaggerFile.createNewFile()
+    swaggerFile.text = p.text
+}
+
+convertSwagger2markup {
+    dependsOn generateDocs
+    System.setProperty("io.springfox.staticdocs.outputDir", "${buildDir}/swagger")
+    System.setProperty("io.springfox.staticdocs.snippetsOutputDir", "${buildDir}/asciidoc/snippets")
+    swaggerInput "${swaggerOutputDir}/swagger.json"
+    outputDir asciiDocOutputDir
+    config = [
+            'swagger2markup.pathsGroupedBy' : 'TAGS',
+            'swagger2markup.extensions.springRestDocs.snippetBaseUri': snippetsOutputDir.getAbsolutePath()]
+}
+
+asciidoctor {
+    dependsOn convertSwagger2markup
+    sourceDir = file("${asciiDocOutputDir}")
+    backends = ['pdf', 'html5']
+    attributes = [
+            doctype: 'book',
+            toc: 'left',
+            toclevels: '3',
+            numbered: '',
+            sectlinks: '',
+            sectanchors: '',
+            hardbreaks: '',
+            generated: asciiDocOutputDir
+    ]
+}
