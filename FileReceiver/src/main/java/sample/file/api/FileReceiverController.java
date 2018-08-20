@@ -12,20 +12,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import sample.file.domain.FileReceiver;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @RestController
 @RequestMapping("/")
-@EnableSwagger2
-@Api(value = "/FileReceiverController", tags = "filereceiver-api", description = "filereceiver-api-operations")
+@Api(tags = "FileReceiver Controller", description = "filereceiver-api operations")
 public class FileReceiverController {
 
 	private static final Logger LOG = Logger.getLogger(FileReceiverController.class.getName());
 
 	@PostMapping(path = "upload/{filename}", consumes = "application/octet-stream")
-	@ApiOperation(value = "upload file")
 	public ResponseEntity<String> uploadFile(@PathVariable("filename") String filename, InputStream fileInputStream) {
 
 		try {
