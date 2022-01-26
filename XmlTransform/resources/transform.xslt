@@ -9,7 +9,7 @@
 	<xsl:template match="description">
 		<xsl:for-each select="text">
 			<xsl:value-of
-				select="concat($delim,$quote,text(),$quote,$delim,$break)">
+				select="concat($delim,$quote,text(),$quote,$delim,@lang_code,$break)">
 			</xsl:value-of>
 		</xsl:for-each>
 	</xsl:template>

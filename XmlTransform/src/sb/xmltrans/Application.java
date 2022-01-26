@@ -24,7 +24,7 @@ public class Application {
 
         Source text = new StreamSource(new File("resources/input.xml"));
         try {
-			transformer.transform(text, new StreamResult(new File("output.txt")));
+			transformer.transform(text, new StreamResult(new File("output.xml")));
 		} catch (TransformerException e) {
 			e.printStackTrace();
 		}
