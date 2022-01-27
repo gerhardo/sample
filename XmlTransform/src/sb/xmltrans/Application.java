@@ -24,7 +24,11 @@ public class Application {
 
         Source text = new StreamSource(new File("resources/input.xml"));
         try {
-			transformer.transform(text, new StreamResult(new File("output.xml")));
+        	// No quotes around text
+        	transformer.setParameter("quote", "");
+        	transformer.setParameter("delim", ",");
+        	// Transform work
+			transformer.transform(text, new StreamResult(new File("output.csv")));
 		} catch (TransformerException e) {
 			e.printStackTrace();
 		}

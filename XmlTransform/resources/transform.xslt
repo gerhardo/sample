@@ -2,11 +2,12 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:output method="text" encoding="utf-8" />
 
+	<!-- Parameter values may be overwritten by transformer call -->
 	<xsl:param name="break" select="'&#xA;'" />
-	<!-- xsl:param name="quote" select="'&quot;'" /-->
-	<xsl:param name="quote" select="" />
+	<xsl:param name="quote" select="'&quot;'" />
 	<xsl:param name="delim" select="';'" />
 		
+	<!-- Build output line -->
 	<xsl:template match="description">
 		<xsl:variable name="lo_number" select="../../lo_number" />
 		<xsl:variable name="id" select="../../id" />
@@ -19,6 +20,6 @@
 		</xsl:for-each>
 	</xsl:template>
 
-	<!-- throw away all remaining text -->
+	<!-- throw away all remaining text like whitespaces -->
 	<xsl:template match="text()" />
 </xsl:stylesheet>
