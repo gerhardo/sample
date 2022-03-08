@@ -1,37 +1,42 @@
 package com.myorg;
 
-import java.io.File;
+import java.util.HashMap;
 
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
+import org.jetbrains.annotations.NotNull;
 
-public class Xml2CsvService {
+import software.amazon.awscdk.services.apigateway.LambdaIntegration;
+import software.amazon.awscdk.services.apigateway.RestApi;
+import software.amazon.awscdk.services.lambda.Code;
+import software.amazon.awscdk.services.lambda.Function;
+import software.amazon.awscdk.services.lambda.Runtime;
+import software.constructs.Construct;
 
-	public static void main(String[] args) {
-		TransformerFactory factory = TransformerFactory.newInstance();
-        Source xslt = new StreamSource(new File("resources/transform.xslt"));
-        Transformer transformer= null;
-		try {
-			transformer = factory.newTransformer(xslt);
-		} catch (TransformerConfigurationException e) {
-			e.printStackTrace();
-		}
+public class Xml2CsvService extends Construct {
 
-        Source text = new StreamSource(new File("resources/input.xml"));
-        try {
-        	// No quotes around text
-        	transformer.setParameter("quote", "");
-        	transformer.setParameter("delim", ",");
-        	// Transform work
-			transformer.transform(text, new StreamResult(new File("output.csv")));
-		} catch (TransformerException e) {
-			e.printStackTrace();
-		}
+	@SuppressWarnings("serial")
+	public Xml2CsvService(@NotNull Construct scope, @NotNull String id) {
+		super(scope, id);
+		
+        Function handler = Function.Builder.create(this, "Xml2CsvHandler")
+                .runtime(Runtime.JAVA_11)
+                .code(Code.fromAsset("target"))
+                .handler("xml2csv.main")
+                .environment(new HashMap<String, String>() {{
+                }}).build();
+
+        RestApi api = RestApi.Builder.create(this, "Xml2Csv-API")
+                .restApiName("Widget Service").description("This API converts xml to csv.")
+                .build();
+
+        LambdaIntegration getXml2CsvIntegration = LambdaIntegration.Builder.create(handler) 
+                .requestTemplates(new HashMap<String, String>() {{
+                    put("application/json", "{ \"statusCode\": \"200\" }");
+                }}).build();
+
+        api.getRoot().addMethod("GET", getXml2CsvIntegration);    
+
 	}
+
+
 
 }
