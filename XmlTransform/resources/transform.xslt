@@ -23,7 +23,7 @@
 		<xsl:variable name="kdn" select="../../kdn" />
 		<xsl:variable name="info" select="../../info" />
 		<xsl:for-each select="text">
-			<xsl:value-of
+			<xsl:value-of disable-output-escaping="yes"
 				select="concat($lo_number,$delim,$id,$delim,$kdn,$delim,$quote,$info,$quote,$delim,../../@label,$delim,../../@publish_date,$delim,$quote,text(),$quote,$delim,@lang_code,$break)">
 			</xsl:value-of>
 		</xsl:for-each>

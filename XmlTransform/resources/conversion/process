@@ -1,0 +1,19 @@
+#!/bin/sh
+export CONVERSION_HOME=${CONVERSION_HOME:-/opt/conversion}
+export PATH=${PATH}:${CONVERSION_HOME}
+SRCDIR=${1:-.}
+XMLFILE=${2:-LabourOperationCatalogue.xml}
+TMPFILE=${XMLFILE}.tmp
+CSVFILE=${3:-LabourOperationCatalogue.csv}
+echo `date +"%Y-%m-%d %H:%M:%S"`:processing $SRCDIR
+cd $SRCDIR
+[ -r $XMLFILE ]&&{
+	sed -e "/&/s//&amp;/g" <$XMLFILE >$TMPFILE #make all ampersand xslt conform
+	xml2csv $TMPFILE $CSVFILE
+	genrvsfiles
+	mv $XMLFILE ${XMLFILE}~
+	rm -f $CSVFILE $TMPFILE
+	exit 0
+}
+echo "no xml file found"; 
+exit 1; 

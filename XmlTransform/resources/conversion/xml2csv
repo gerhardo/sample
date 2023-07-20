@@ -1,0 +1,4 @@
+#!/bin/sh
+INPUT=${1:-input.xml}
+OUTPUT=${2:-output.csv}
+java -cp "${CONVERSION_HOME}/xmltrans.jar" sb.xmltrans.Application $INPUT $OUTPUT

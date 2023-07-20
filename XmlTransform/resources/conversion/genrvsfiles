@@ -1,0 +1,8 @@
+#!/bin/bash
+for l in `cat resources/rvs-mapping.txt`
+do
+	src=${l/:*/}	
+	dst=${l/*:/}	
+	echo copying $src to $dst
+	cp $src $dst
+done

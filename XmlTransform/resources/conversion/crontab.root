@@ -1,0 +1,2 @@
+20 2 * * * find /mnt/transfer -type d -name \*-rvs -exec /opt/conversion/process \{\} \; >>/tmp/cron.out 2>&1
+30 4 * * * find /tmp/cron.out -size +10M -exec mv -f \{\} \{\}~ \; 
